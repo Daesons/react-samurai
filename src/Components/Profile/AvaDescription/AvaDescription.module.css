@@ -1,0 +1,7 @@
+.avaDescription{
+    display: grid;
+    grid-template-columns: 2fr 10fr;
+}
+.img {
+    width: 1200px;
+}
