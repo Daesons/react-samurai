@@ -5,14 +5,14 @@ import './index.css';
 import App from './App';
 import {store} from "./Components/redux/redux-store";
 import {StoreContext} from "./StoreContext";
+import {Provider} from "react-redux";
 
 
 export const EntireTree = () => {
-    debugger
     ReactDOM.render(
-        <StoreContext.Provider value={store}>
+        <Provider store={store}>
             <App/>
-        </StoreContext.Provider>,
+        </Provider>,
         document.getElementById('root')
     );
 }

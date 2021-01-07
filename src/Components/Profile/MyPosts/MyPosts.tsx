@@ -4,23 +4,33 @@ import {store, storeType} from "../../redux/redux-store";
 import {postsItemsType} from "../../redux/Types";
 import Post from "./LatestPosts/Post";
 
-type MyPostsPropsType = {
-    newPostText:string
-    addPost:()=>void
-    onChangeTextForPost:(e: ChangeEvent<HTMLTextAreaElement>)=>void
+type mapStateToPropsType ={
     postsData:postsItemsType[]
+    newPostText:string
 }
 
-export const MyPosts = (props:MyPostsPropsType) => {
+type mapDispatchToProps = {
+    addNewPost:(newPostText:string)=>void
+    changeNewTextForPost:(e: ChangeEvent<HTMLTextAreaElement>)=>void
+}
+
+
+export const MyPosts = (props:mapStateToPropsType & mapDispatchToProps) => {
     let mappedPostData = props.postsData.map((p) => <Post text={p.text} countLikes={p.countLikes} key={p.id}/>)
 
+    const addNewPost = () => {
+        props.addNewPost(props.newPostText)
+    }
+    const changeNewTextForPost = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        props.changeNewTextForPost(e)
+    }
     return (
         <div>
             <div className={c.item}>
                 <h3>My posts</h3>
-                <br/><textarea value={props.newPostText} onChange={props.onChangeTextForPost}/>
+                <br/><textarea value={props.newPostText} onChange={changeNewTextForPost}/>
                 <br/>
-                <button onClick={props.addPost}> submit</button>
+                <button onClick={addNewPost}> submit</button>
             </div>
             {mappedPostData}
         </div>

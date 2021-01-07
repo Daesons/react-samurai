@@ -7,27 +7,30 @@ import {
     messageItemsType
 } from "../../redux/Types";
 
+type mapStateToPropsType = {
+    dialogsData: dialogItemsType[]
+    messagesData: messageItemsType[]
+    newMessage: string
 
-type DialogsPropsType = {
-    addNewMessageToDialogs:()=>void
-    changeMessageDialogsText:(e: ChangeEvent<HTMLTextAreaElement>)=>void
-    dialogsData:dialogItemsType[]
-    messagesData:messageItemsType[]
-    newMessage:string
+}
+
+type mapDispatchToPropsType = {
+    addNewMessageToDialogs: () => void
+    changeMessageDialogsText: (e: ChangeEvent<HTMLTextAreaElement>) => void
 
 }
 
 
-const Dialogs = (props: DialogsPropsType) => {
+const Dialogs = (props: mapDispatchToPropsType & mapStateToPropsType) => {
 
     let mappedDialogsData = props.dialogsData.map((d) => <DialogItem name={d.name} id={d.id}/>)
 
     let mappedMessagesData = props.messagesData.map((m) => <Message text={m.text} id={m.id}/>)
 
-    const onClick = () => {
+    const addNewMessageToDialogs = () => {
         props.addNewMessageToDialogs()
     }
-    const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const onChangeMessage = (e: ChangeEvent<HTMLTextAreaElement>) => {
         props.changeMessageDialogsText(e)
     }
 
@@ -39,8 +42,8 @@ const Dialogs = (props: DialogsPropsType) => {
                 </div>
                 <div className={s.messages}>
                     {mappedMessagesData}
-                    <textarea value={props.newMessage} onChange={onChange}/>
-                    <button onClick={onClick}>addMessage</button>
+                    <textarea value={props.newMessage} onChange={onChangeMessage}/>
+                    <button onClick={addNewMessageToDialogs}>addMessage</button>
                 </div>
             </div>
         </div>

@@ -10,18 +10,10 @@ import Music from "./Components/Profile/Music/Music";
 import News from "./Components/Profile/News/News";
 import Friends from "./Components/Profile/Friends/Friends";
 
-import {storeType} from "./Components/redux/redux-store";
-import DialogsContainer from "./Components/Profile/Dialogs/DialogsContainer";
-
-
-// type AppPropsType = {
-//     store: storeType
-// }
+import {DialogsContainer} from "./Components/Profile/Dialogs/DialogsContainer";
 
 
 function App() {
-
-    // // вызов функции что даёт на сам стейт с пэйджами и присвоение ему названия
 
     return (
         <BrowserRouter>

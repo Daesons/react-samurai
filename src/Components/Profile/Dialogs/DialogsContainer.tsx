@@ -1,46 +1,30 @@
 import React, {ChangeEvent} from "react";
-import DialogItem from "./DialogItem/DialogItem";
-import Message from "./Message/Message";
 import {
     addNewMessageToDialogsActionCreator,
     changeMessageDialogsTextActionCreator
 } from "../../redux/DialogsPageReducer";
 import Dialogs from "./Dialogs";
-import {storeType} from "../../redux/redux-store";
-import {StoreContext} from "../../../StoreContext";
+import {dispatchType, stateType} from "../../redux/redux-store";
+import {connect} from "react-redux";
 
-type DialogsContainerPropsType = {
-    store: storeType
+
+
+let mapStateToProps = (state: stateType) => {
+    return {
+        dialogsData: state.dialogsPage.dialogsData,
+        messagesData: state.dialogsPage.messagesData,
+        newMessage: state.dialogsPage.newMessage
+    }
+}
+let mapDispatchToProps = (dispatch: dispatchType) => {
+    return {
+        addNewMessageToDialogs: () => {
+            dispatch(addNewMessageToDialogsActionCreator())
+        },
+        changeMessageDialogsText: (e: ChangeEvent<HTMLTextAreaElement>) => {
+            dispatch(changeMessageDialogsTextActionCreator(e.currentTarget.value))
+        }
+    }
 }
 
-
-const DialogsContainer = () => {
-
-
-
-    return (
-        <StoreContext.Consumer>
-            {
-                (store) => {
-                    const addNewMessageToDialogs = () => {
-                        store.dispatch(addNewMessageToDialogsActionCreator(store.getState().dialogsPage.newMessage))
-                    }
-                    const changeMessageDialogsText = (e: ChangeEvent<HTMLTextAreaElement>) => {
-                        store.dispatch(changeMessageDialogsTextActionCreator(e.currentTarget.value))
-                    }
-
-                    return (
-                        <Dialogs addNewMessageToDialogs={addNewMessageToDialogs}
-                                 changeMessageDialogsText={changeMessageDialogsText}
-                                 dialogsData={store.getState().dialogsPage.dialogsData}
-                                 messagesData={store.getState().dialogsPage.messagesData}
-                                 newMessage={store.getState().dialogsPage.newMessage}/>
-                    )
-                }
-            }
-        </StoreContext.Consumer>
-    )
-
-}
-
-export default DialogsContainer
+export const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs)
