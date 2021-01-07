@@ -1,17 +1,19 @@
 import React, {ChangeEvent} from "react";
 
-import {addNewPostActionCreator, changeNewTextActionCreator} from "../../../redux/ProfilePageReducer";
-import NewPost from "./NewPost";
-import {store, storeType} from "../../../redux/redux-store";
-import {StoreContext} from "../../../../StoreContext";
+import {addNewPostActionCreator, changeNewTextActionCreator} from "../../redux/ProfilePageReducer";
+import {store, storeType} from "../../redux/redux-store";
+import {StoreContext} from "../../../StoreContext";
+import MyPosts from "./MyPosts";
+import Post from "./LatestPosts/Post";
 
 
 type NewPostPropsType = {
     store: storeType
+
 }
 
 
-const NewPostContainer = () => {
+const MyPostsContainer = () => {
 
 
     return (
@@ -30,13 +32,26 @@ const NewPostContainer = () => {
                         console.log(e.currentTarget.value)
                         // переберает каждый символ и записывает его в newPostText, который в стейте
                     }
+
+                    const addPost = () => {
+                       addNewPost()
+                    }
+                    // коллбэк добавления поста
+                    const onChangeTextForPost = (e: ChangeEvent<HTMLTextAreaElement>) => {
+                        changeNewTextForPost(e)
+                    }
+                    // коллбэк для текст ареа
                     return (
-                        <NewPost changeNewTextForPost={changeNewTextForPost} addNewPost={addNewPost}
-                                 newPostText={store.getState().profilePage.newPostText}/>
+                        <MyPosts newPostText={store.getState().profilePage.newPostText}
+                                 addPost={addPost}
+                                 postsData={store.getState().profilePage.postsData}
+                                 onChangeTextForPost={onChangeTextForPost}
+                        />
                     )
                 }
             }
         </StoreContext.Consumer>
     )
 }
-export default NewPostContainer;
+export default MyPostsContainer;
+
