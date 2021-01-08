@@ -1,5 +1,5 @@
 import React from "react";
-import s from './../Dialogs.module.css'
+import s from '../Dialogs.module.css'
 
 
 
@@ -9,7 +9,7 @@ type MessagePropsType = {
 }
 
 
-function Message(props:MessagePropsType) {
+export function Message(props:MessagePropsType) {
     return (
         <div className={s.message}>
             {props.text}
@@ -19,5 +19,3 @@ function Message(props:MessagePropsType) {
 }
 
 
-
-export default Message

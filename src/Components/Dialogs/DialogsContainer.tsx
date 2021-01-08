@@ -2,10 +2,10 @@ import React, {ChangeEvent} from "react";
 import {
     addNewMessageToDialogsActionCreator,
     changeMessageDialogsTextActionCreator
-} from "../../redux/DialogsPageReducer";
-import Dialogs from "./Dialogs";
-import {dispatchType, stateType} from "../../redux/redux-store";
+} from "../redux/DialogsPageReducer";
+import {dispatchType, stateType} from "../redux/redux-store";
 import {connect} from "react-redux";
+import {Dialogs} from "./Dialogs";
 
 
 

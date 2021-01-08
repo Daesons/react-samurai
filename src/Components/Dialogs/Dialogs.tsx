@@ -1,11 +1,8 @@
 import React, {ChangeEvent} from "react";
 import s from './Dialogs.module.css'
-import DialogItem from "./DialogItem/DialogItem";
-import Message from "./Message/Message";
-import {
-    dialogItemsType,
-    messageItemsType
-} from "../../redux/Types";
+import {Message} from "./Message/Message";
+import {DialogItem} from "./DialogItem/DialogItem";
+import {dialogItemsType, messageItemsType} from "../redux/DialogsPageReducer";
 
 type mapStateToPropsType = {
     dialogsData: dialogItemsType[]
@@ -21,7 +18,7 @@ type mapDispatchToPropsType = {
 }
 
 
-const Dialogs = (props: mapDispatchToPropsType & mapStateToPropsType) => {
+export const Dialogs = (props: mapDispatchToPropsType & mapStateToPropsType) => {
 
     let mappedDialogsData = props.dialogsData.map((d) => <DialogItem key={d.id} name={d.name} id={d.id}/>)
 
@@ -51,5 +48,3 @@ const Dialogs = (props: mapDispatchToPropsType & mapStateToPropsType) => {
     )
 
 }
-
-export default Dialogs

@@ -1,4 +1,14 @@
-import {actionTypes, profilePageType} from "./Types";
+import {actionTypes} from "./Types";
+
+export type postsItemsType = {
+    id?: number,
+    text: string,
+    countLikes: number
+}
+export type profilePageType = {
+    postsData: Array<postsItemsType>
+    newPostText: string
+}
 
 const initialState = {
     postsData: [
@@ -7,6 +17,7 @@ const initialState = {
         {id: 3, text: "4em", countLikes: 22}],
     newPostText: ''
 }
+
 
 export const profilePageReducer = (state :profilePageType = initialState , action :actionTypes) => {
     switch (action.type) {

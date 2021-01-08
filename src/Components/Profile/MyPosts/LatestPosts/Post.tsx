@@ -1,10 +1,10 @@
 import React from "react";
 import c from './Post.module.css'
 ;
-import {postsItemsType} from "../../../redux/Types";
+import {postsItemsType} from "../../../redux/ProfilePageReducer";
 
 
-const Post = (props: postsItemsType )=> {
+export const Post = (props: postsItemsType )=> {
 
     return (
         <div className = {c.item}>
@@ -18,5 +18,3 @@ const Post = (props: postsItemsType )=> {
 }
 
 
-
-export default Post;

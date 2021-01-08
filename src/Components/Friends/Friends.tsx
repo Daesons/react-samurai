@@ -2,7 +2,7 @@ import React from "react";
 import c from './Friends.module.css'
 
 
-function Friends () {
+export function Friends () {
 
    return( <div >
        Friends
@@ -10,4 +10,3 @@ function Friends () {
     </div>
    )
 }
-export default Friends;

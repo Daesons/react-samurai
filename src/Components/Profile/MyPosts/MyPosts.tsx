@@ -1,8 +1,9 @@
 import React, {ChangeEvent} from "react";
 import c from './MyPosts.module.css'
 import {store, storeType} from "../../redux/redux-store";
-import {postsItemsType} from "../../redux/Types";
-import Post from "./LatestPosts/Post";
+import {Post} from "./LatestPosts/Post";
+import {postsItemsType} from "../../redux/ProfilePageReducer";
+
 
 type mapStateToPropsType ={
     postsData:postsItemsType[]
@@ -36,4 +37,3 @@ export const MyPosts = (props:mapStateToPropsType & mapDispatchToProps) => {
         </div>
     )
 }
-export default MyPosts;

@@ -1,4 +1,20 @@
-import {actionTypes, dialogsPageType} from "./Types";
+import {actionTypes} from "./Types";
+
+export type dialogItemsType = {
+    name: string
+    id: number
+
+}
+export type messageItemsType = {
+    text: string
+    id: number
+
+}
+export type dialogsPageType = {
+    dialogsData: Array<dialogItemsType>
+    messagesData: Array<messageItemsType>
+    newMessage: string
+}
 
 const initialState = {
     dialogsData: [
@@ -19,6 +35,7 @@ const initialState = {
     ],
     newMessage: ''
 }
+
 
 export const dialogsPageReducer = (state :dialogsPageType = initialState, action: actionTypes) => {
     switch (action.type) {

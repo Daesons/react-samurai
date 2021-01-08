@@ -1,7 +1,7 @@
 import React from "react";
 import s from './Settings.module.css'
 
-function Settings() {
+export function Settings() {
     return (
         <div>
             Settings
@@ -9,5 +9,3 @@ function Settings() {
     )
 
 }
-
-export default Settings

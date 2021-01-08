@@ -1,7 +1,7 @@
 import React from "react";
 import s from './ News.module.css'
 
-function News () {
+export function News () {
     return (
         <div>
             News
@@ -9,5 +9,3 @@ function News () {
     )
 
 }
-
-export default News

@@ -1,16 +1,16 @@
 import React from 'react';
-import './App.css';
-import Header from "./Components/Header/Header";
-import Navbar from "./Components/Navbar/Navbar";
-import Profile from "./Components/Profile/Profile";
-import Dialogs from "./Components/Profile/Dialogs/Dialogs";
 import {BrowserRouter, Route} from 'react-router-dom';
-import Settings from "./Components/Profile/Settings/Settings";
-import Music from "./Components/Profile/Music/Music";
-import News from "./Components/Profile/News/News";
-import Friends from "./Components/Profile/Friends/Friends";
+import './App.css';
+import {DialogsContainer} from "./Components/Dialogs/DialogsContainer";
+import {Header} from "./Components/Header/Header";
+import {Music} from "./Components/Music/Music";
+import {Friends} from "./Components/Friends/Friends";
+import {News} from "./Components/News/News";
+import {Navbar} from "./Components/Navbar/Navbar";
+import {Profile} from "./Components/Profile/Profile";
+import {Settings} from "./Components/Settings/Settings";
+import {UsersContainer} from "./Components/Users/UsersContainer";
 
-import {DialogsContainer} from "./Components/Profile/Dialogs/DialogsContainer";
 
 
 function App() {
@@ -21,13 +21,13 @@ function App() {
                 <Header/>
                 <Navbar/>
                 <div className='app-wrapper-content'>
-                    <Route path='/profile' render={() => <Profile/>}/>
-                    <Route path='/dialogs' render={() => <DialogsContainer/>}/>
-                    <Route path='/news' render={() => <News/>}/>
-                    <Route path='/music' render={() => <Music/>}/>
-                    <Route path='/settings' render={() => <Settings/>}/>
+                    <Route path='/Profile' render={() => <Profile/>}/>
+                    <Route path='/Dialogs' render={() => <DialogsContainer/>}/>
+                    <Route path='/News' render={() => <News/>}/>
+                    <Route path='/Music' render={() => <Music/>}/>
+                    <Route path='/Settings' render={() => <Settings/>}/>
                     <Route path='/Friends' render={() => <Friends/>}/>
-
+                    <Route path='/Users' render={() => <UsersContainer />}/>
                 </div>
             </div>
         </BrowserRouter>
