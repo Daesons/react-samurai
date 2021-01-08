@@ -1,5 +1,4 @@
 import {actionTypes, dialogsPageType} from "./Types";
-import {strict} from "assert";
 
 const initialState = {
     dialogsData: [
@@ -18,20 +17,24 @@ const initialState = {
         {id: 5, text: "LL"},
         {id: 6, text: "VV"}
     ],
-    newMessage: 'hello'
+    newMessage: ''
 }
 
 export const dialogsPageReducer = (state :dialogsPageType = initialState, action: actionTypes) => {
     switch (action.type) {
 
         case 'CHANGE-MESSAGE-DIALOGS-TEXT':
-            state.newMessage = action.newText
-            return state
+            return{
+                ...state, newMessage:action.newText,
+            }
+
         case 'ADD-MESSAGE-TO-DIALOGS':
             let newMessageToDialogs = state.newMessage
-            state.messagesData.push({id: 33, text: newMessageToDialogs})
-            state.newMessage = ''
-            return state
+            return{
+                ...state,
+                messagesData:[...state.messagesData,{id: 33, text: newMessageToDialogs}],
+                newMessage: ''
+            }
         default:
             return state
     }

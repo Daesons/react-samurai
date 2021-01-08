@@ -23,6 +23,7 @@ let mapDispatchToProps = (dispatch: dispatchType) => {
         },
         changeMessageDialogsText: (e: ChangeEvent<HTMLTextAreaElement>) => {
             dispatch(changeMessageDialogsTextActionCreator(e.currentTarget.value))
+            console.log(e.currentTarget.value)
         }
     }
 }

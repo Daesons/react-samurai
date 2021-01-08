@@ -23,15 +23,16 @@ type mapDispatchToPropsType = {
 
 const Dialogs = (props: mapDispatchToPropsType & mapStateToPropsType) => {
 
-    let mappedDialogsData = props.dialogsData.map((d) => <DialogItem name={d.name} id={d.id}/>)
+    let mappedDialogsData = props.dialogsData.map((d) => <DialogItem key={d.id} name={d.name} id={d.id}/>)
 
-    let mappedMessagesData = props.messagesData.map((m) => <Message text={m.text} id={m.id}/>)
+    let mappedMessagesData = props.messagesData.map((m) => <Message key={m.id} text={m.text} id={m.id}/>)
 
     const addNewMessageToDialogs = () => {
         props.addNewMessageToDialogs()
     }
     const onChangeMessage = (e: ChangeEvent<HTMLTextAreaElement>) => {
         props.changeMessageDialogsText(e)
+
     }
 
     return (
