@@ -1,7 +1,7 @@
 import {actionTypes} from "./Types";
 
 export type usersItemsType = {
-    fullName: string
+    name: string
     id: number
     status: string
     location: { country: string, city: string }
