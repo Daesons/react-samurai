@@ -6,7 +6,7 @@ export type usersItemsType = {
     status: string
     location: { country: string, city: string }
     follow: boolean
-    photoUrl: string
+    photos: {small: null | string, large: null | string}
 
 }
 export type usersPageType = {

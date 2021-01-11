@@ -1,6 +1,8 @@
 import React from "react";
 import {usersItemsType} from "../redux/UsersPageReducer";
 import axios from "axios";
+import {noAvatarUser} from "../../assets/IMG";
+import s from './Users.module.css'
 
 type mapStateToPropsType = {
     usersData: usersItemsType[]
@@ -13,43 +15,24 @@ type mapDispatchToPropsType = {
 }
 
 export const Users = (props: mapDispatchToPropsType & mapStateToPropsType) => {
-    if (props.usersData.length === 0) {
 
-        axios.get('https://social-network.samuraijs.com/api/1.0/users').then((response: { data: { items: usersItemsType[]; }; })=>{
-            props.setUsers(response.data.items)
-        })
-/*        return props.setUsers([{
-                id: 1,
-                fullName: 'kek',
-                photoUrl: '',
-                follow: false,
-                status: 'kekwait',
-                location: {country: 'BL', city: '17'}
-            },
-            {
-                id: 2,
-                fullName: 'wait',
-                photoUrl: '',
-                follow: true,
-                status: 'waitkek',
-                location: {country: 'UK', city: '17'}
-            },
-            {
-                id: 3,
-                fullName: 'lul',
-                photoUrl: '',
-                follow: true,
-                status: 'wawkait',
-                location: {country: 'UA', city: '17'}
-            }
-        ])*/
+    const setUsers = () => {
+        if (props.usersData.length === 0) {
+
+            axios.get('https://social-network.samuraijs.com/api/1.0/users').then((response: { data: { items: usersItemsType[]; }; }) => {
+                    props.setUsers(response.data.items)
+                }
+            )
+        }
     }
     return (
         <div>
+            <button onClick={setUsers}>setUsers</button>
             {
                 props.usersData.map(u => <div key={u.id}>
                     <span>
-                        <div><img src={'u.photoUrl'}/></div>
+                        <div><img className={s.img}
+                                  src={u.photos.small === null ? noAvatarUser : u.photos.small}/></div>
                         <div>{u.follow
                             ? <button onClick={() => props.unFollowUser(u.id)}>unfollow</button>
                             : <button onClick={() => props.followUser(u.id)}>follow</button>}

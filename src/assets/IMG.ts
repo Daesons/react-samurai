@@ -1,0 +1,1 @@
+export const  noAvatarUser = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2OJl4qP1iI3gwfzzZT-RXCjosCk1sNTC5AQ&usqp=CAU'
