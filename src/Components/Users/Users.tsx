@@ -14,31 +14,29 @@ type mapDispatchToPropsType = {
     setUsers: (usersData: usersItemsType[]) => void
 }
 
-export const Users = (props: mapDispatchToPropsType & mapStateToPropsType) => {
+export class Users extends React.Component<mapDispatchToPropsType & mapStateToPropsType/*тут должна быть типизация стейта через запятую*/> {
 
-    const setUsers = () => {
-        if (props.usersData.length === 0) {
-
-            axios.get('https://social-network.samuraijs.com/api/1.0/users').then((response: { data: { items: usersItemsType[]; }; }) => {
-                    props.setUsers(response.data.items)
-                }
-            )
-        }
+    constructor(props: (mapDispatchToPropsType & mapStateToPropsType) | Readonly<mapDispatchToPropsType & mapStateToPropsType>) {
+        super(props);
+        axios.get('https://social-network.samuraijs.com/api/1.0/users').then((response: { data: { items: usersItemsType[]; }; }) => {
+            this.props.setUsers(response.data.items)
+        })
     }
-    return (
-        <div>
-            <button onClick={setUsers}>setUsers</button>
-            {
-                props.usersData.map(u => <div key={u.id}>
+
+    render() {
+        return (
+            <div>
+                {
+                    this.props.usersData.map(u => <div key={u.id}>
                     <span>
                         <div><img className={s.img}
                                   src={u.photos.small === null ? noAvatarUser : u.photos.small}/></div>
                         <div>{u.follow
-                            ? <button onClick={() => props.unFollowUser(u.id)}>unfollow</button>
-                            : <button onClick={() => props.followUser(u.id)}>follow</button>}
+                            ? <button onClick={() => this.props.unFollowUser(u.id)}>unfollow</button>
+                            : <button onClick={() => this.props.followUser(u.id)}>follow</button>}
                         </div>
                     </span>
-                    <span>
+                        <span>
                         <span>
                             <div>{u.name}</div>
                             <div>{u.status}</div>
@@ -48,8 +46,10 @@ export const Users = (props: mapDispatchToPropsType & mapStateToPropsType) => {
                             <div>{'u.location.city'}</div>
                          </span>
                     </span>
-                </div>)
-            }
-        </div>
-    )
+                    </div>)
+                }
+            </div>
+        )
+    }
 }
+
