@@ -16,12 +16,11 @@ type mapDispatchToPropsType = {
 
 export class Users extends React.Component<mapDispatchToPropsType & mapStateToPropsType/*тут должна быть типизация стейта через запятую*/> {
 
-    constructor(props: (mapDispatchToPropsType & mapStateToPropsType) | Readonly<mapDispatchToPropsType & mapStateToPropsType>) {
-        super(props);
-        axios.get('https://social-network.samuraijs.com/api/1.0/users').then((response: { data: { items: usersItemsType[]; }; }) => {
-            this.props.setUsers(response.data.items)
-        })
-    }
+        componentDidMount() {
+            axios.get('https://social-network.samuraijs.com/api/1.0/users').then((response: { data: { items: usersItemsType[]; }; }) => {
+                this.props.setUsers(response.data.items)
+            })
+        }
 
     render() {
         return (
