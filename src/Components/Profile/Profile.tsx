@@ -1,19 +1,18 @@
 import React from "react";
-import c from './Profile.module.css'
-import {storeType} from "../redux/redux-store";
 import {MyPostsContainer} from "./MyPosts/MyPostsContainer";
 import {ProfileHeader} from "./ProfileHeader/ProfileHeader";
 import {AvaDescription} from "./AvaDescription/AvaDescription";
+import {userProfileType} from "../redux/ProfilePageReducer";
 
-type ProfilePropsType = {
-    store: storeType
+type propsType = {
+    userProfile:userProfileType | null
 }
 
-export function Profile() {
+export function Profile(props:propsType) {
 
     return (<div>
             <ProfileHeader/>
-            <AvaDescription/>
+            <AvaDescription userProfile={props.userProfile} />
             <MyPostsContainer/>
 
         </div>

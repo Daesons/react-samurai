@@ -8,42 +8,72 @@ export type postsItemsType = {
 export type profilePageType = {
     postsData: Array<postsItemsType>
     newPostText: string
+    userProfile: userProfileType | null
 }
 
-const initialState = {
+export type userProfileType = {
+    aboutMe: string
+    userId: number
+    lookingForAJob: boolean
+    lookingForAJobDescription: string
+    fullName: string
+    contacts: {
+        github: string
+        vk: string
+        facebook: string
+        instagram: string
+        twitter: string
+        website: string
+        youtube: string
+        mainLink: string
+    }
+    photos: {
+        small: string
+        large: string
+    }
+}
+
+
+const initialState: profilePageType = {
     postsData: [
         {id: 1, text: "My first post", countLikes: 134},
         {id: 2, text: "LUL", countLikes: 5},
         {id: 3, text: "4em", countLikes: 22}],
-    newPostText: ''
+    newPostText: '',
+    userProfile: null
 }
 
 
-export const profilePageReducer = (state :profilePageType = initialState , action :actionTypes) => {
+export const profilePageReducer = (state: profilePageType = initialState, action: actionTypes) => {
+    debugger
     switch (action.type) {
         case 'ADD-NEW-POST':
             return {
                 ...state,
-                postsData:[
-                    ...state.postsData,{id: 4,
-                    text: action.text,
-                    countLikes: Math.floor(Math.random() * 200)}
-                    ],
-                newPostText:''
+                postsData: [
+                    ...state.postsData, {
+                        id: 4,
+                        text: action.newPostText,
+                        countLikes: Math.floor(Math.random() * 200)
+                    }
+                ],
+                newPostText: ''
             }
         // кейс создающий новый пост в зависимости от введенного в текст ареа
         // пушит его в массив и перерисовывает дерево(типа типа юс стейта)
         case 'CHANGE-NEW-POST-TEXT':
             return {
                 ...state,
-                newPostText: action.newText
+                newPostText: action.newPostText
+            }
+        case 'SET-USER-PROFILE' :
+            return {
+                ...state, userProfile: action.userProfile
             }
         default:
             return state
     }
 }// экшен отдельно вывели в функцию и вызывать будем импортом
-export const addNewPostActionCreator = (text: string) => ({type: "ADD-NEW-POST", text: text}) as const
-export const changeNewTextActionCreator = (newText: string) => ({
-    type: 'CHANGE-NEW-POST-TEXT',
-    newText: newText
-}) as const
+export const addNewPostActionCreator = (newPostText: string) => ({type: "ADD-NEW-POST", newPostText}) as const
+export const changeNewTextActionCreator = (newPostText: string) => ({type: 'CHANGE-NEW-POST-TEXT', newPostText}) as const
+export const setUserProfile = (userProfile: userProfileType) => ({type: 'SET-USER-PROFILE', userProfile}) as const

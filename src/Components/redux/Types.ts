@@ -1,6 +1,8 @@
 import {addNewMessageToDialogsActionCreator, changeMessageDialogsTextActionCreator,} from "./DialogsPageReducer";
-import {addNewPostActionCreator, changeNewTextActionCreator} from "./ProfilePageReducer";
-import {followActionCreator, serUsersActionCreator, unFollowActionCreator} from "./UsersPageReducer";
+import {addNewPostActionCreator, changeNewTextActionCreator, setUserProfile} from "./ProfilePageReducer";
+import {
+    unFollowUser, setTotalCount, followUser, setUsers, setIsFetching, setCurrentPage
+} from "./UsersPageReducer";
 
 type addNewPostActionType = ReturnType<typeof addNewPostActionCreator> // лайфхак для типизации типов экшенов
 // тайпскрипт сам выбирает тип на основе объекта внутри функции но надо в концедобавлять as const
@@ -8,15 +10,22 @@ type addNewPostActionType = ReturnType<typeof addNewPostActionCreator> // лай
 type ChangeNewPostTextActionType = ReturnType<typeof changeNewTextActionCreator>
 type addNewMessageToDialogsActionType = ReturnType<typeof addNewMessageToDialogsActionCreator>
 type changeMessageDialogsTextActionType = ReturnType<typeof changeMessageDialogsTextActionCreator>
-type followActionCreatorType = ReturnType<typeof followActionCreator>
-type unFollowActionCreatorType = ReturnType<typeof unFollowActionCreator>
-type setUsersActionCreatorType = ReturnType<typeof serUsersActionCreator>
-export type actionTypes =
-    addNewPostActionType
+type followUserType = ReturnType<typeof followUser>
+type unFollowUserType = ReturnType<typeof unFollowUser>
+type setUsersType = ReturnType<typeof setUsers>
+type setCurrentPageType = ReturnType<typeof setCurrentPage>
+type setTotalCountType = ReturnType<typeof setTotalCount>
+type setIsFetchingType = ReturnType<typeof setIsFetching>
+type setUserProfileType = ReturnType<typeof setUserProfile>
+export type actionTypes = addNewPostActionType
     | ChangeNewPostTextActionType
     | addNewMessageToDialogsActionType
     | changeMessageDialogsTextActionType
-    | followActionCreatorType
-    | unFollowActionCreatorType
-    | setUsersActionCreatorType
+    | followUserType
+    | unFollowUserType
+    | setUsersType
+    | setCurrentPageType
+    | setTotalCountType
+    | setIsFetchingType
+    | setUserProfileType
 

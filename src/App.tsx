@@ -10,6 +10,7 @@ import {Navbar} from "./Components/Navbar/Navbar";
 import {Profile} from "./Components/Profile/Profile";
 import {Settings} from "./Components/Settings/Settings";
 import {UsersContainer} from "./Components/Users/UsersContainer";
+import {ProfileContainer} from "./Components/Profile/ProfileContainer";
 
 
 
@@ -21,7 +22,7 @@ function App() {
                 <Header/>
                 <Navbar/>
                 <div className='app-wrapper-content'>
-                    <Route path='/Profile' render={() => <Profile/>}/>
+                    <Route path='/Profile/:userId?' render={() => <ProfileContainer/>}/>
                     <Route path='/Dialogs' render={() => <DialogsContainer/>}/>
                     <Route path='/News' render={() => <News/>}/>
                     <Route path='/Music' render={() => <Music/>}/>

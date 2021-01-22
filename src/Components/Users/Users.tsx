@@ -1,41 +1,48 @@
 import React from "react";
-import {usersItemsType} from "../redux/UsersPageReducer";
-import axios from "axios";
+
 import {noAvatarUser} from "../../assets/IMG";
 import s from './Users.module.css'
+import {usersItemsType} from "../redux/UsersPageReducer";
+import {NavLink} from "react-router-dom";
 
-type mapStateToPropsType = {
+type UsersPropsType = {
+    totalCount:number
+    pageSize:number
+    currentPage:number
     usersData: usersItemsType[]
+    unFollowUser:(userId: number)=>void
+    followUser:(userId: number)=>void
+    onPageChanged:(currentPage:number)=>void
 }
 
-type mapDispatchToPropsType = {
-    unFollowUser: (userId: number) => void
-    followUser: (userId: number) => void
-    setUsers: (usersData: usersItemsType[]) => void
-}
+export const Users = (props:UsersPropsType) => {
 
-export class Users extends React.Component<mapDispatchToPropsType & mapStateToPropsType/*тут должна быть типизация стейта через запятую*/> {
+    let pagesCount = Math.ceil(props.totalCount / props.pageSize)
+    let pages = []
+    for (let i = 1; i <= pagesCount; i++) {
+        pages.push(i)
+    }
 
-        componentDidMount() {
-            axios.get('https://social-network.samuraijs.com/api/1.0/users').then((response: { data: { items: usersItemsType[]; }; }) => {
-                this.props.setUsers(response.data.items)
-            })
-        }
+    return (
+        <div>
+            {pages.map(p => <span onClick={() => props.onPageChanged(p)}
+                                  className={props.currentPage === p ? s.selectedPage : ''}>{p}</span>)}
 
-    render() {
-        return (
-            <div>
-                {
-                    this.props.usersData.map(u => <div key={u.id}>
+            {
+                props.usersData.map(u => <div key={u.id}>
                     <span>
-                        <div><img className={s.img}
-                                  src={u.photos.small === null ? noAvatarUser : u.photos.small}/></div>
-                        <div>{u.follow
-                            ? <button onClick={() => this.props.unFollowUser(u.id)}>unfollow</button>
-                            : <button onClick={() => this.props.followUser(u.id)}>follow</button>}
+                        <div>
+                            <NavLink to={'/profile/' + u.id }>
+                                <img className={s.img} src={u.photos.small === null ? noAvatarUser : u.photos.small}/>
+                            </NavLink>
+
+                        </div>
+                        <div>{u.followed
+                            ? <button onClick={() => props.unFollowUser(u.id)}>unfollow</button>
+                            : <button onClick={() => props.followUser(u.id)}>follow</button>}
                         </div>
                     </span>
-                        <span>
+                    <span>
                         <span>
                             <div>{u.name}</div>
                             <div>{u.status}</div>
@@ -45,10 +52,10 @@ export class Users extends React.Component<mapDispatchToPropsType & mapStateToPr
                             <div>{'u.location.city'}</div>
                          </span>
                     </span>
-                    </div>)
-                }
-            </div>
-        )
-    }
+                </div>)
+            }
+        </div>
+    )
 }
+
 
