@@ -11,6 +11,8 @@ import {Profile} from "./Components/Profile/Profile";
 import {Settings} from "./Components/Settings/Settings";
 import {UsersContainer} from "./Components/Users/UsersContainer";
 import {ProfileContainer} from "./Components/Profile/ProfileContainer";
+import HeaderContainer from "./Components/Header/HeaderContainer";
+import {Login} from "./Components/Login/Login";
 
 
 
@@ -19,7 +21,7 @@ function App() {
     return (
         <BrowserRouter>
             <div className='app-wrapper'>
-                <Header/>
+                <HeaderContainer  />
                 <Navbar/>
                 <div className='app-wrapper-content'>
                     <Route path='/Profile/:userId?' render={() => <ProfileContainer/>}/>
@@ -29,6 +31,7 @@ function App() {
                     <Route path='/Settings' render={() => <Settings/>}/>
                     <Route path='/Friends' render={() => <Friends/>}/>
                     <Route path='/Users' render={() => <UsersContainer />}/>
+                    <Route path='/Login' render={()=><Login/>}/>
                 </div>
             </div>
         </BrowserRouter>

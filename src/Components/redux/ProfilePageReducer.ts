@@ -1,4 +1,6 @@
 import {actionTypes} from "./Types";
+import {RequestsAPI} from "../../Api/api";
+import {Dispatch} from "redux";
 
 export type postsItemsType = {
     id?: number,
@@ -8,7 +10,7 @@ export type postsItemsType = {
 export type profilePageType = {
     postsData: Array<postsItemsType>
     newPostText: string
-    userProfile: userProfileType | null
+    userProfile: userProfileType
 }
 
 export type userProfileType = {
@@ -40,12 +42,11 @@ const initialState: profilePageType = {
         {id: 2, text: "LUL", countLikes: 5},
         {id: 3, text: "4em", countLikes: 22}],
     newPostText: '',
-    userProfile: null
+    userProfile: {} as userProfileType
 }
 
 
 export const profilePageReducer = (state: profilePageType = initialState, action: actionTypes) => {
-    debugger
     switch (action.type) {
         case 'ADD-NEW-POST':
             return {
@@ -75,5 +76,14 @@ export const profilePageReducer = (state: profilePageType = initialState, action
     }
 }// экшен отдельно вывели в функцию и вызывать будем импортом
 export const addNewPostActionCreator = (newPostText: string) => ({type: "ADD-NEW-POST", newPostText}) as const
-export const changeNewTextActionCreator = (newPostText: string) => ({type: 'CHANGE-NEW-POST-TEXT', newPostText}) as const
+export const changeNewTextActionCreator = (newPostText: string) => ({
+    type: 'CHANGE-NEW-POST-TEXT',
+    newPostText
+}) as const
 export const setUserProfile = (userProfile: userProfileType) => ({type: 'SET-USER-PROFILE', userProfile}) as const
+
+export const getUserProfileThunk = (userId: string) => (dispatch: Dispatch) => {
+    RequestsAPI.profile.getUserProfile(userId).then((data) => {
+        dispatch(setUserProfile(data))
+    })
+}

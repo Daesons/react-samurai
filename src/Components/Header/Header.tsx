@@ -1,7 +1,20 @@
 import React from "react";
 import c from './Header.module.css'
-export const Header = ()=> {
+import {NavLink} from "react-router-dom";
+
+type headerPropsType = {
+    isAuth?: boolean
+    login: string | null
+}
+
+
+export const Header = (props: headerPropsType)=> {
    return <header className={c.header}>
-       <img src='https://steamuserimages-a.akamaihd.net/ugc/874124519767182911/885BE9F22458674504E1B7F39E2D2F9007566C68/'/>
+       <img src='https://www.meme-arsenal.com/memes/d4c068215d8808d8fecd57d61cd92e42.jpg'/>
+
+       <div className={c.loginBlock}>
+           {props.isAuth  ? props.login : <NavLink to={'/Login'}> login</NavLink>}
+       </div>
+
     </header>
 }

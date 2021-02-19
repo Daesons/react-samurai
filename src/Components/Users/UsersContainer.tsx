@@ -1,15 +1,14 @@
 import React from "react";
-import {connect, useSelector} from "react-redux";
+import {connect} from "react-redux";
 import {Users} from "./Users";
-import {dispatchType, stateType} from "../redux/redux-store";
+import {stateType} from "../redux/redux-store";
 import {
-    followUser, setCurrentPage, setIsFetching,
-    setTotalCount, setUsers,
-    unFollowUser,
+    followUserThunk, getUsersThunk, setCurrentPage,
+    unFollowUserThunk,
     usersItemsType
 } from "../redux/UsersPageReducer";
-import axios from "axios";
 import {Preloader} from "../Common/Preloader/Preloader";
+
 
 type mapStateToPropsType = {
     usersData: usersItemsType[]
@@ -17,39 +16,26 @@ type mapStateToPropsType = {
     totalCount: number
     currentPage: number
     isFetching: boolean
+    inProgress: number[]
 }
 
 type mapDispatchToPropsType = {
-    unFollowUser: (userId: number) => void
-    followUser: (userId: number) => void
-    setUsers: (usersData: usersItemsType[]) => void
     setCurrentPage: (currentPage: number) => void
-    setTotalCount: (totalCount: number) => void
-    setIsFetching: (isFetching: boolean) => void
+    getUsersThunk: (currentPage: number, pageSize: number) => void
+    unFollowUserThunk: (userId: number) => void
+    followUserThunk: (userId: number) => void
 }
 
 export class UsersAPIContainer extends React.Component<mapDispatchToPropsType & mapStateToPropsType/*тут должна быть типизация стейта через запятую*/> {
 
     componentDidMount() {
-        this.props.setIsFetching(true)
-        axios.get(
-            `https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`)
-            .then((response: { data: { items: usersItemsType[], totalCount: number } }) => {
-
-                this.props.setUsers(response.data.items)
-                this.props.setTotalCount(response.data.totalCount)
-                this.props.setIsFetching(false)
-            })
+        this.props.getUsersThunk(this.props.currentPage, this.props.pageSize)
     }
 
     onPageChanged = (currentPage: number) => {
-        this.props.setIsFetching(true)
         this.props.setCurrentPage(currentPage)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${currentPage}&count=${this.props.pageSize}`)
-            .then((response: { data: { items: usersItemsType[] } }) => {
-                this.props.setUsers(response.data.items)
-                this.props.setIsFetching(false)
-            })
+        this.props.getUsersThunk(currentPage, this.props.pageSize)
+
 
     }
 
@@ -60,10 +46,11 @@ export class UsersAPIContainer extends React.Component<mapDispatchToPropsType & 
                 <Users usersData={this.props.usersData}
                        pageSize={this.props.pageSize}
                        currentPage={this.props.currentPage}
-                       followUser={this.props.followUser}
                        onPageChanged={this.onPageChanged}
                        totalCount={this.props.totalCount}
-                       unFollowUser={this.props.unFollowUser}/>}
+                       inProgress={this.props.inProgress}
+                       followUserThunk={this.props.followUserThunk}
+                       unFollowUserThunk={this.props.unFollowUserThunk}/>}
 
         </>
     }
@@ -75,7 +62,8 @@ const mapStateToProps = (state: stateType) => {
         pageSize: state.usersPage.pageSize,
         totalCount: state.usersPage.totalCount,
         currentPage: state.usersPage.currentPage,
-        isFetching: state.usersPage.isFetching
+        isFetching: state.usersPage.isFetching,
+        inProgress: state.usersPage.inProgress
     }
 }
 
@@ -106,4 +94,9 @@ const mapStateToProps = (state: stateType) => {
 }*/
 
 export const UsersContainer = connect(mapStateToProps,
-    {followUser,unFollowUser,setUsers,setCurrentPage,setTotalCount,setIsFetching})(UsersAPIContainer)
+    {
+        setCurrentPage,
+        getUsersThunk,
+        unFollowUserThunk,
+        followUserThunk,
+    })(UsersAPIContainer)

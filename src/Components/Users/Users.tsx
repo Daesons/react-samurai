@@ -1,21 +1,23 @@
 import React from "react";
-
 import {noAvatarUser} from "../../assets/IMG";
 import s from './Users.module.css'
 import {usersItemsType} from "../redux/UsersPageReducer";
 import {NavLink} from "react-router-dom";
+import {RequestsAPI} from "../../Api/api";
+
 
 type UsersPropsType = {
-    totalCount:number
-    pageSize:number
-    currentPage:number
+    totalCount: number
+    pageSize: number
+    currentPage: number
     usersData: usersItemsType[]
-    unFollowUser:(userId: number)=>void
-    followUser:(userId: number)=>void
-    onPageChanged:(currentPage:number)=>void
+    onPageChanged: (currentPage: number) => void
+    inProgress: number[]
+    unFollowUserThunk: (userId: number) => void
+    followUserThunk: (userId: number) => void
 }
 
-export const Users = (props:UsersPropsType) => {
+export const Users = (props: UsersPropsType) => {
 
     let pagesCount = Math.ceil(props.totalCount / props.pageSize)
     let pages = []
@@ -25,24 +27,36 @@ export const Users = (props:UsersPropsType) => {
 
     return (
         <div>
-            {pages.map(p => <span onClick={() => props.onPageChanged(p)}
+            {pages.map(p => <span key={p} onClick={() => props.onPageChanged(p)}
                                   className={props.currentPage === p ? s.selectedPage : ''}>{p}</span>)}
 
             {
-                props.usersData.map(u => <div key={u.id}>
+                props.usersData.map(u => {
+                    const unFollowUser = () => {
+                        props.unFollowUserThunk(u.id)
+                    }
+                    const followUser = () => {
+                        props.followUserThunk(u.id)
+                    }
+
+                    return <div key={u.id}>
                     <span>
                         <div>
-                            <NavLink to={'/profile/' + u.id }>
+                            <NavLink to={'/profile/' + u.id}>
                                 <img className={s.img} src={u.photos.small === null ? noAvatarUser : u.photos.small}/>
                             </NavLink>
 
                         </div>
-                        <div>{u.followed
-                            ? <button onClick={() => props.unFollowUser(u.id)}>unfollow</button>
-                            : <button onClick={() => props.followUser(u.id)}>follow</button>}
+                        <div>{
+                            u.followed
+                                ? <button disabled={props.inProgress.some(id => id === u.id)}
+                                          onClick={unFollowUser}>unfollow</button>
+                                : <button disabled={props.inProgress.some(id => id === u.id)}
+                                          onClick={followUser}>follow</button>
+                        }
                         </div>
                     </span>
-                    <span>
+                        <span>
                         <span>
                             <div>{u.name}</div>
                             <div>{u.status}</div>
@@ -52,7 +66,8 @@ export const Users = (props:UsersPropsType) => {
                             <div>{'u.location.city'}</div>
                          </span>
                     </span>
-                </div>)
+                    </div>
+                })
             }
         </div>
     )

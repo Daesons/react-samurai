@@ -1,34 +1,34 @@
 import {actionTypes} from "./Types";
+import {Dispatch} from "redux";
+import {RequestsAPI} from "../../Api/api";
 
 export type usersItemsType = {
     name: string
     id: number
-    uniqueUrlName: string | null
     status: string | null
-    location: { country: string, city: string }
     followed: boolean
     photos: { small: null | string, large: null | string }
 
 }
 export type usersPageType = {
     usersData: usersItemsType[]
-    //usersData: usersItemsType[]
     totalCount: number
     error: null | string
     pageSize: number
     currentPage: number
-    isFetching:boolean
+    isFetching: boolean
+    inProgress: number[]
 }
 
 
-const initialState : usersPageType = {
-    usersData: [],
+const initialState: usersPageType = {
+    usersData: [] as usersItemsType[],
     totalCount: 20,
     pageSize: 5,
     error: null,
     currentPage: 1,
-    isFetching:true
-
+    isFetching: false,
+    inProgress: []
 
 }
 
@@ -40,7 +40,7 @@ export const usersPageReducer = (state: usersPageType = initialState, action: ac
                 ...state,
                 usersData: state.usersData.map(u => {
                     if (u.id === action.userId) {
-                        return {...u, follow: true}
+                        return {...u, followed: true}
                     }
                     return u
                 })
@@ -50,7 +50,7 @@ export const usersPageReducer = (state: usersPageType = initialState, action: ac
                 ...state,
                 usersData: state.usersData.map(u => {
                     if (u.id === action.userId) {
-                        return {...u, follow: false}
+                        return {...u, followed: false}
                     }
                     return u
                 })
@@ -69,7 +69,13 @@ export const usersPageReducer = (state: usersPageType = initialState, action: ac
             }
         case "SET-IS-FETCHING":
             return {
-                ...state, isFetching:action.isFetching
+                ...state, isFetching: action.isFetching
+            }
+        case "SET-FOLLOWING-IN-PROGRESS" :
+            return {
+                ...state, inProgress: action.isFetching
+                    ? [...state.inProgress, action.userId]
+                    : [...state.inProgress.filter(id=>id !== action.userId)]
             }
         default:
             return state
@@ -82,3 +88,31 @@ export const setUsers = (usersData: usersItemsType[]) => ({type: 'SET-USERS', us
 export const setCurrentPage = (currentPage: number) => ({type: 'SET-CURRENT-PAGE', currentPage}) as const
 export const setTotalCount = (totalCount: number) => ({type: 'SET-TOTAL-COUNT', totalCount}) as const
 export const setIsFetching = (isFetching: boolean) => ({type: 'SET-IS-FETCHING', isFetching}) as const
+export const setFollowingInProgress = (isFetching: boolean, userId: number) => ({type: "SET-FOLLOWING-IN-PROGRESS", isFetching,userId}) as const
+
+export const getUsersThunk = (currentPage : number, pageSize : number) => (dispatch : Dispatch) =>{
+    dispatch(setIsFetching(true))
+    RequestsAPI.users.getUsers(currentPage, pageSize).then(data => {
+        dispatch(setUsers(data.items))
+        dispatch(setTotalCount(data.totalCount))
+        dispatch(setIsFetching(false))
+    })
+}
+export const unFollowUserThunk  = (userId : number) => (dispatch: Dispatch)=>{
+    dispatch(setFollowingInProgress(true, userId))
+    RequestsAPI.follow.unFollowUser(userId).then((data) => {
+        if (data.resultCode === 0) {
+            dispatch(unFollowUser(userId))
+            dispatch(setFollowingInProgress(false, userId))
+        }
+    })
+}
+export const followUserThunk  = (userId : number) => (dispatch: Dispatch)=>{
+    dispatch(setFollowingInProgress(true, userId))
+    RequestsAPI.follow.followUser(userId).then((data) => {
+        if (data.resultCode === 0) {
+            dispatch(followUser(userId))
+            dispatch(setFollowingInProgress(false, userId))
+        }
+    })
+}

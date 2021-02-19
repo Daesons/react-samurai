@@ -1,23 +1,23 @@
 import React from "react";
-import c from './AvaDescription.module.css'
+import s from './AvaDescription.module.css'
 import {userProfileType} from "../../redux/ProfilePageReducer";
 import {Preloader} from "../../Common/Preloader/Preloader";
+import { noAvatarUser } from "../../../assets/IMG";
 
 type propsType = {
-    userProfile:userProfileType | null
+    userProfile:userProfileType
 }
 
 export const AvaDescription = (props:propsType) => {
-    debugger
-        if(!props.userProfile) {
+        if(!props.userProfile.photos) {
             return <Preloader/>
         }
     return (
-        <div className={c.avaDescription}>
-            <div className={c.div}>
-                <img src = {props.userProfile?.photos.large}/>
+        <div className={s.avaDescription}>
+            <div className={s.div}>
+                <img className={s.img} src = {props.userProfile.photos.large === null ? noAvatarUser : props.userProfile?.photos.large }/>
             </div>
-            <div className={c.description}>
+            <div className={s.description}>
                 <br/> {props.userProfile.fullName}
                 <br/>{props.userProfile.lookingForAJobDescription}
                 <br/>{props.userProfile.aboutMe}

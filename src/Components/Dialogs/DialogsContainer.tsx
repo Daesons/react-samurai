@@ -13,7 +13,8 @@ let mapStateToProps = (state: stateType) => {
     return {
         dialogsData: state.dialogsPage.dialogsData,
         messagesData: state.dialogsPage.messagesData,
-        newMessage: state.dialogsPage.newMessage
+        newMessage: state.dialogsPage.newMessage,
+        isAuth: state.auth.isAuth
     }
 }
 let mapDispatchToProps = (dispatch: dispatchType) => {
@@ -27,5 +28,6 @@ let mapDispatchToProps = (dispatch: dispatchType) => {
         }
     }
 }
+
 
 export const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs)

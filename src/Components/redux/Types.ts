@@ -1,8 +1,9 @@
 import {addNewMessageToDialogsActionCreator, changeMessageDialogsTextActionCreator,} from "./DialogsPageReducer";
 import {addNewPostActionCreator, changeNewTextActionCreator, setUserProfile} from "./ProfilePageReducer";
 import {
-    unFollowUser, setTotalCount, followUser, setUsers, setIsFetching, setCurrentPage
+    unFollowUser, setTotalCount, followUser, setUsers, setIsFetching, setCurrentPage, setFollowingInProgress
 } from "./UsersPageReducer";
+import {setAuthUserData} from "./AuthReducer";
 
 type addNewPostActionType = ReturnType<typeof addNewPostActionCreator> // лайфхак для типизации типов экшенов
 // тайпскрипт сам выбирает тип на основе объекта внутри функции но надо в концедобавлять as const
@@ -17,6 +18,8 @@ type setCurrentPageType = ReturnType<typeof setCurrentPage>
 type setTotalCountType = ReturnType<typeof setTotalCount>
 type setIsFetchingType = ReturnType<typeof setIsFetching>
 type setUserProfileType = ReturnType<typeof setUserProfile>
+type setAuthUserDataType = ReturnType<typeof setAuthUserData>
+type setFollowingInProgressType = ReturnType<typeof setFollowingInProgress>
 export type actionTypes = addNewPostActionType
     | ChangeNewPostTextActionType
     | addNewMessageToDialogsActionType
@@ -28,4 +31,6 @@ export type actionTypes = addNewPostActionType
     | setTotalCountType
     | setIsFetchingType
     | setUserProfileType
+    | setAuthUserDataType
+    | setFollowingInProgressType
 
