@@ -1,5 +1,5 @@
 import {addNewMessageToDialogsActionCreator, changeMessageDialogsTextActionCreator,} from "./DialogsPageReducer";
-import {addNewPostActionCreator, changeNewTextActionCreator, setUserProfile} from "./ProfilePageReducer";
+import {addNewPostActionCreator, changeNewTextActionCreator, setUserProfile, setUserStatus} from "./ProfilePageReducer";
 import {
     unFollowUser, setTotalCount, followUser, setUsers, setIsFetching, setCurrentPage, setFollowingInProgress
 } from "./UsersPageReducer";
@@ -20,6 +20,7 @@ type setIsFetchingType = ReturnType<typeof setIsFetching>
 type setUserProfileType = ReturnType<typeof setUserProfile>
 type setAuthUserDataType = ReturnType<typeof setAuthUserData>
 type setFollowingInProgressType = ReturnType<typeof setFollowingInProgress>
+type setUserStatusType = ReturnType<typeof setUserStatus>
 export type actionTypes = addNewPostActionType
     | ChangeNewPostTextActionType
     | addNewMessageToDialogsActionType
@@ -33,4 +34,5 @@ export type actionTypes = addNewPostActionType
     | setUserProfileType
     | setAuthUserDataType
     | setFollowingInProgressType
+    | setUserStatusType
 

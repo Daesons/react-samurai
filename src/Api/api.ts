@@ -42,6 +42,8 @@ type authMeResponseType = {
 }
 type profileType = {
     getUserProfile: (userId: string) => Promise<getUserProfileResponseType>
+    getUserStatus: (userId:string) => Promise<string>
+    changeStatus: (title:string) => Promise<{}>
 }
 type getUserProfileResponseType = {
     aboutMe: string
@@ -107,6 +109,18 @@ export const RequestsAPI: RequestAPIType = {
                 return response.data
                 }
             )
+        },
+        getUserStatus (userId:string) {
+            return instance.get(`profile/status/${userId}`).then((res: {data: string}) =>{
+                console.log(res.data)
+                return res.data
+            })
+        },
+        changeStatus (title) {
+            return instance.put('profile/status', {status: title}).then((res: { data :{}}) =>{
+                console.log(res.data)
+                return res.data
+            })
         }
     },
     follow: {

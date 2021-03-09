@@ -1,7 +1,11 @@
 import React from "react";
 
 
-export class ProfileStatus extends React.Component<any, any> {
+type propsType = {
+    status : string
+}
+
+export class ProfileStatus extends React.Component<propsType, any> {
 
     state = {
         editMode: false
@@ -22,11 +26,11 @@ export class ProfileStatus extends React.Component<any, any> {
             <>
                 {this.state.editMode ?
                     <div>
-                        <input autoFocus={true} onBlur={this.deactivatedMode}/>
+                        <input value={this.props.status} autoFocus={true} onBlur={this.deactivatedMode}/>
                     </div>
                     :
                     <div onDoubleClick={this.activatedMode}>
-                        {'kek'}
+                        {this.props.status}
                     </div>
                 }
             </>

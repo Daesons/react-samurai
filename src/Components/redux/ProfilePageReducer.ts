@@ -11,6 +11,7 @@ export type profilePageType = {
     postsData: Array<postsItemsType>
     newPostText: string
     userProfile: userProfileType
+    status: string
 }
 
 export type userProfileType = {
@@ -42,7 +43,8 @@ const initialState: profilePageType = {
         {id: 2, text: "LUL", countLikes: 5},
         {id: 3, text: "4em", countLikes: 22}],
     newPostText: '',
-    userProfile: {} as userProfileType
+    userProfile: {} as userProfileType,
+    status: ''
 }
 
 
@@ -71,6 +73,10 @@ export const profilePageReducer = (state: profilePageType = initialState, action
             return {
                 ...state, userProfile: action.userProfile
             }
+        case "SET-USER-STATUS":
+            return {
+                ...state, status: action.title
+            }
         default:
             return state
     }
@@ -80,10 +86,21 @@ export const changeNewTextActionCreator = (newPostText: string) => ({
     type: 'CHANGE-NEW-POST-TEXT',
     newPostText
 }) as const
+export const setUserStatus = (title: string) => ({
+    type: 'SET-USER-STATUS', title
+}) as const
+
+
+
 export const setUserProfile = (userProfile: userProfileType) => ({type: 'SET-USER-PROFILE', userProfile}) as const
 
 export const getUserProfileThunk = (userId: string) => (dispatch: Dispatch) => {
     RequestsAPI.profile.getUserProfile(userId).then((data) => {
         dispatch(setUserProfile(data))
+    })
+}
+export const getUserStatusThunk = (userId: string) => (dispatch: Dispatch) => {
+    RequestsAPI.profile.getUserStatus(userId).then(data => {
+        dispatch(setUserStatus(data))
     })
 }
