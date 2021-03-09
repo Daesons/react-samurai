@@ -17,7 +17,6 @@ import {Login} from "./Components/Login/Login";
 
 
 function App() {
-
     return (
         <BrowserRouter>
             <div className='app-wrapper'>
