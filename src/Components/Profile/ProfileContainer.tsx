@@ -1,7 +1,13 @@
 import React from "react";
 import {Profile} from "./Profile";
 import {connect} from "react-redux";
-import {getUserProfileThunk, getUserStatusThunk, setUserProfile, userProfileType} from "../redux/ProfilePageReducer";
+import {
+    getUserProfileThunk,
+    getUserStatusThunk,
+    setUserProfile,
+    setUserStatus,
+    userProfileType
+} from "../redux/ProfilePageReducer";
 import {stateType} from "../redux/redux-store";
 import {RouteComponentProps, withRouter} from 'react-router-dom'
 import {withAuthRedirect} from "../Hoc/withAuthRedirect";
@@ -20,6 +26,7 @@ type mapStateToPropsType = {
 type mapDispatchToPropsType = {
     getUserProfileThunk: (userId: string) => void
     getUserStatusThunk : (userId: string)=>void
+    setUserStatus: (title: string) =>void
 }
 
 type ownPropsType = mapStateToPropsType & mapDispatchToPropsType
@@ -38,7 +45,7 @@ export class ProfileAPIContainer extends React.Component<ProfileWithUrlDataAPICo
     }
 
     render() {
-        return <Profile userProfile={this.props.userProfile}
+        return <Profile setUserStatus={this.props.setUserStatus} userProfile={this.props.userProfile}
         status={this.props.status}/>;
     }
 }
@@ -53,5 +60,5 @@ export const mapStateToProps = (state: stateType) => ({
 // export const ProfileContainer = connect(mapStateToProps, {getUserProfileThunk})(ProfileWithUrlDataAPIContainer)
 export const ProfileContainer =
     compose<React.ComponentType>
-    (connect(mapStateToProps, {getUserProfileThunk,getUserStatusThunk}),
+    (connect(mapStateToProps, {getUserProfileThunk,getUserStatusThunk,setUserStatus}),
         withRouter, withAuthRedirect)(ProfileAPIContainer)

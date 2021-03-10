@@ -9,6 +9,7 @@ import {ProfileStatus} from "./ProfileStatus/ProfileStatus";
 type propsType = {
     userProfile: userProfileType
     status: string
+    setUserStatus: (title:string)=>void
 }
 
 export function Profile(props: propsType) {
@@ -16,7 +17,7 @@ export function Profile(props: propsType) {
     return (<div>
             <ProfileHeader/>
             <AvaDescription userProfile={props.userProfile}/>
-            <ProfileStatus status={props.status}/>
+            <ProfileStatus setUserStatus={props.setUserStatus} status={props.status}/>
             <MyPostsContainer/>
 
         </div>
