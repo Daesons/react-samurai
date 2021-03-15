@@ -3,6 +3,7 @@ import s from './Dialogs.module.css'
 import {Message} from "./Message/Message";
 import {DialogItem} from "./DialogItem/DialogItem";
 import {dialogItemsType, messageItemsType} from "../redux/DialogsPageReducer";
+import {AddMessageReduxForm} from "./AddMessageForm";
 
 type mapStateToPropsType = {
     dialogsData: dialogItemsType[]
@@ -13,11 +14,9 @@ type mapStateToPropsType = {
 }
 
 type mapDispatchToPropsType = {
-    addNewMessageToDialogs: () => void
-    changeMessageDialogsText: (e: ChangeEvent<HTMLTextAreaElement>) => void
+    addNewMessageToDialogs: (newMessage: string) => void
 
 }
-
 
 
 export const Dialogs = (props: mapDispatchToPropsType & mapStateToPropsType) => {
@@ -26,13 +25,12 @@ export const Dialogs = (props: mapDispatchToPropsType & mapStateToPropsType) => 
 
     let mappedMessagesData = props.messagesData.map((m) => <Message key={m.id} text={m.text} id={m.id}/>)
 
-    const addNewMessageToDialogs = () => {
-        props.addNewMessageToDialogs()
-    }
-    const onChangeMessage = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.changeMessageDialogsText(e)
+    const addNewMessageToDialogs = (values: { newMessage: string }) => {
+        props.addNewMessageToDialogs(values.newMessage)
+        console.log(values.newMessage)
 
     }
+
 
     return (
         <div>
@@ -42,8 +40,9 @@ export const Dialogs = (props: mapDispatchToPropsType & mapStateToPropsType) => 
                 </div>
                 <div className={s.messages}>
                     {mappedMessagesData}
-                    <textarea value={props.newMessage} onChange={onChangeMessage}/>
-                    <button onClick={addNewMessageToDialogs}>addMessage</button>
+                    {/*  <textarea value={props.newMessage} onChange={onChangeMessage}/>
+                    <button onClick={addNewMessageToDialogs}>addMessage</button>*/}
+                    <AddMessageReduxForm onSubmit={addNewMessageToDialogs}/>
                 </div>
             </div>
         </div>

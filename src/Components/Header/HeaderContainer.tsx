@@ -1,10 +1,9 @@
 import React from "react";
 import {Header} from "./Header";
-import {setIsFetching} from "../redux/UsersPageReducer";
 import {connect} from "react-redux";
-import {getAuthUserData, setAuthUserData} from "../redux/AuthReducer";
+import {getAuthUserData} from "../redux/AuthReducer";
 import {stateType} from "../redux/redux-store";
-import {RequestsAPI} from "../../Api/api";
+
 
 type mapStateToPropsType = {
     isAuth?: boolean

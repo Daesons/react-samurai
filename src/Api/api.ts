@@ -1,18 +1,28 @@
 import axios from "axios";
 
 
-type followType = {
-    followUser: (userId: number) => Promise<followResponseType>
-    unFollowUser: (userId: number) => Promise<followResponseType>
+type authMeResponseType = {
+    resultCode: number
+    messages: string[]
+    data: {
+        id: number,
+        email: string,
+        login: string
+    }
 }
-type followResponseType = {
+type loginResponseType = {
     resultCode: number
     messages: string[],
+    data: {
+        userId: number
+    }
+}
+type unLoginResponseType = {
+    resultCode: number
+    messages: string[]
     data: {}
 }
-type usersType = {
-    getUsers: (currentPage: number, pageSize: number) => Promise<getUsersResponseType>
-}
+
 type usersItemsType = {
     name: string
     id: number
@@ -27,23 +37,6 @@ type getUsersResponseType = {
     error: null | string
     pageSize: number
     currentPage: number
-}
-type authType = {
-    authMe: () => Promise<authMeResponseType>
-}
-type authMeResponseType = {
-    resultCode: number
-    messages: string[]
-    data: {
-        id: number,
-        email: string,
-        login: string
-    }
-}
-type profileType = {
-    getUserProfile: (userId: string) => Promise<getUserProfileResponseType>
-    getUserStatus: (userId:string) => Promise<string>
-    changeStatus: (title:string) => Promise<{}>
 }
 type getUserProfileResponseType = {
     aboutMe: string
@@ -66,9 +59,35 @@ type getUserProfileResponseType = {
         large: string
     }
 }
+type changeStatusResponseType = {
+    resultCode: number
+    messages: string[]
+    data: {}
+}
 
+type followResponseType = {
+    resultCode: number
+    messages: string[],
+    data: {}
+}
 
-
+type authType = {
+    authMe: () => Promise<authMeResponseType>
+    login: (email: string, password: string) => Promise<loginResponseType>
+    unLogin: () => Promise<unLoginResponseType>
+}
+type usersType = {
+    getUsers: (currentPage: number, pageSize: number) => Promise<getUsersResponseType>
+}
+type profileType = {
+    getUserProfile: (userId: string) => Promise<getUserProfileResponseType>
+    getUserStatus: (userId: string) => Promise<string>
+    changeStatus: (title: string) => Promise<{}>
+}
+type followType = {
+    followUser: (userId: number) => Promise<followResponseType>
+    unFollowUser: (userId: number) => Promise<followResponseType>
+}
 type RequestAPIType = {
     auth: authType
     security: {}
@@ -88,36 +107,48 @@ const instance = axios.create({
 export const RequestsAPI: RequestAPIType = {
     auth: {
         authMe() {
-            return instance.get(`auth/me`).then((response: { data: authMeResponseType }) => {
+            return instance.get<authMeResponseType>(`auth/me`).then((response) => {
                     return response.data
                 }
             )
+        },
+        login(email: string, password: string) {
+            return instance.post<loginResponseType>('auth/login', {email, password}).then((res) => {
+                console.log(res.data, 'LOGIN')
+                return res.data
+            })
+        },
+        unLogin() {
+            return instance.delete<unLoginResponseType>('auth/login').then(res => {
+                console.log(res.data, 'UNLOGIN')
+                return res.data
+            })
         }
     },
     security: {},
     users: {
         getUsers(currentPage = 1, pageSize = 5) {
-            return instance.get(`users?page=${currentPage}&count=${pageSize}`).then((response: { data: getUsersResponseType }) => {
+            return instance.get<getUsersResponseType>(`users?page=${currentPage}&count=${pageSize}`).then((response) => {
                     return response.data
                 }
             )
         }
     },
     profile: {
-        getUserProfile (userId: string) {
-            return instance.get(`profile/${userId}`).then((response: {data :getUserProfileResponseType }) =>{
-                return response.data
+        getUserProfile(userId: string) {
+            return instance.get<getUserProfileResponseType>(`profile/${userId}`).then((response) => {
+                    return response.data
                 }
             )
         },
-        getUserStatus (userId:string) {
-            return instance.get(`profile/status/${userId}`).then((res: {data: string}) =>{
+        getUserStatus(userId: string) {
+            return instance.get<string>(`profile/status/${userId}`).then((res) => {
                 console.log(res.data)
                 return res.data
             })
         },
-        changeStatus (title) {
-            return instance.put('profile/status', {status: title}).then((res: { data :{}}) =>{
+        changeStatus(title: string) {
+            return instance.put<changeStatusResponseType>('profile/status', {status: title}).then((res) => {
                 console.log(res.data)
                 return res.data
             })
@@ -125,13 +156,13 @@ export const RequestsAPI: RequestAPIType = {
     },
     follow: {
         followUser(userId: number) {
-            return instance.post(`follow/${userId}`).then((response: { data: followResponseType }) => {
+            return instance.post<followResponseType>(`follow/${userId}`).then((response) => {
                     return response.data
                 }
             )
         },
         unFollowUser(userId: number) {
-            return instance.delete(`follow/${userId}`).then((response: { data: followResponseType }) => {
+            return instance.delete<followResponseType>(`follow/${userId}`).then((response) => {
                     return response.data
                 }
             )

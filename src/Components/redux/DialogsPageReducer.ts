@@ -13,10 +13,9 @@ export type messageItemsType = {
 export type dialogsPageType = {
     dialogsData: Array<dialogItemsType>
     messagesData: Array<messageItemsType>
-    newMessage: string
 }
 
-const initialState = {
+const initialState: dialogsPageType = {
     dialogsData: [
         {id: 1, name: "Petro"},
         {id: 2, name: "Valero"},
@@ -33,34 +32,21 @@ const initialState = {
         {id: 5, text: "LL"},
         {id: 6, text: "VV"}
     ],
-    newMessage: ''
 }
 
 
 export const dialogsPageReducer = (state :dialogsPageType = initialState, action: actionTypes) => {
     switch (action.type) {
-
-        case 'CHANGE-MESSAGE-DIALOGS-TEXT':
-            return{
-                ...state, newMessage:action.newText,
-            }
-
         case 'ADD-MESSAGE-TO-DIALOGS':
-            let newMessageToDialogs = state.newMessage
             return{
                 ...state,
-                messagesData:[...state.messagesData,{id: 33, text: newMessageToDialogs}],
-                newMessage: ''
+                messagesData:[...state.messagesData,{id: 33, text: action.newMessage}]
             }
         default:
             return state
     }
 }
 // экшен отдельно вывели в функцию и вызывать будем импортом
-export const addNewMessageToDialogsActionCreator = () => ({
-    type: 'ADD-MESSAGE-TO-DIALOGS',
-}) as const
-export const changeMessageDialogsTextActionCreator = (newText: string) => ({
-    type: 'CHANGE-MESSAGE-DIALOGS-TEXT',
-    newText: newText
+export const addNewMessageToDialogsActionCreator = (newMessage: string) => ({
+    type: 'ADD-MESSAGE-TO-DIALOGS', newMessage
 }) as const

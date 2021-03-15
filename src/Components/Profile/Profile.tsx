@@ -19,7 +19,6 @@ export function Profile(props: propsType) {
             <AvaDescription userProfile={props.userProfile}/>
             <ProfileStatus setUserStatus={props.setUserStatus} status={props.status}/>
             <MyPostsContainer/>
-
         </div>
     )
 }

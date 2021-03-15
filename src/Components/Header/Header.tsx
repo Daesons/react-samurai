@@ -1,6 +1,7 @@
 import React from "react";
 import c from './Header.module.css'
 import {NavLink} from "react-router-dom";
+import {RequestsAPI} from "../../Api/api";
 
 type headerPropsType = {
     isAuth?: boolean
@@ -14,6 +15,7 @@ export const Header = (props: headerPropsType)=> {
 
        <div className={c.loginBlock}>
            {props.isAuth  ? props.login : <NavLink to={'/Login'}> login</NavLink>}
+           <button onClick={()=> RequestsAPI.auth.unLogin()}>Exit</button>
        </div>
 
     </header>
